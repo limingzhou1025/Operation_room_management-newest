@@ -1,16 +1,13 @@
 package manager;
+
 import model.User;
 import pub.DBConn;
-import model.Doctor;
-import model.Patient;
 
-import javax.management.relation.Role;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Connection;
 import java.util.Vector;
-import java.util.concurrent.Callable;
 
 public class RoleManager {
     //创建角色
@@ -60,8 +57,7 @@ public class RoleManager {
             return i;
     }
     //修改角色
-    public int updaterole(String useid, String name, String username, String password,
-                          String role){
+    public int updaterole(String useid, String name, String username, String password, String role){
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -70,11 +66,12 @@ public class RoleManager {
             int i =0;
             String sql;
             sql = "update user set useid='" +
-                    useid +"', name='" +
+                    useid +"',name='" +
                     name +"', username='" +
                     username +"', password='" +
-                    password +"',role='" +
-                    role +"'";
+                    password +"', role='" +
+                    role +"' where useid='" +
+                    useid +"'";
             try {
                 stmt =conn.createStatement();
                 i = stmt.executeUpdate(sql);
@@ -115,10 +112,11 @@ public class RoleManager {
             return u;
     }
     //根据姓名查询角色
-    public User findrolename(String name){
+    public Vector findrolename(String name){
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
+        Vector list = new Vector<>();
         String sql;
         sql = "select * from user where name='" +
                 name +"'";
@@ -128,20 +126,28 @@ public class RoleManager {
         try {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
-            if (rs.next()){
+            int i = 0;
+            while (rs.next()){
                 u = new User();
                 u.setUseid(rs.getString("useid"));
                 u.setName(rs.getString("name"));
                 u.setUsername(rs.getString("username"));
                 u.setPassword(rs.getString("password"));
                 u.setRole(rs.getString("role"));
+                list.add(i, u.getUseid() + " "
+                        + u.getName() +" "
+                + u.getUsername() +" "
+                + u.getPassword() +" "
+                + u.getRole() );
+                i++;
             }
             rs.close();
+            stmt.close();
             conn.close();
         }catch (SQLException ex3){
             ex3.printStackTrace();
         }
-        return u;
+        return list;
     }
     //根据用户名查询角色
     public User findroleusername(String username){
@@ -173,10 +179,11 @@ public class RoleManager {
         return u;
     }
     //根据用户角色查询角色
-    public User findrolerole(String role){
+    public Vector findrolerole(String role){
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
+        Vector list = new Vector<>();
         String sql;
         sql = "select * from user where role='" +
                 role +"'";
@@ -186,19 +193,27 @@ public class RoleManager {
         try {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
-            if (rs.next()){
+            int i =0;
+            while (rs.next()){
                 u = new User();
                 u.setUseid(rs.getString("useid"));
                 u.setName(rs.getString("name"));
                 u.setUsername(rs.getString("username"));
                 u.setPassword(rs.getString("password"));
                 u.setRole(rs.getString("role"));
+                list.add(i,u.getUseid() +" "
+                + u.getName() +" "
+                + u.getUsername() +" "
+                +u.getPassword() +" "
+                +u.getRole() );
+                i++;
             }
             rs.close();
+            stmt.close();
             conn.close();
         }catch (SQLException ex3){
             ex3.printStackTrace();
         }
-        return u;
+        return list;
     }
 }
