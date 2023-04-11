@@ -1,17 +1,12 @@
 package manager;
+
 import model.Operation;
-import model.Patient;
-import model.Doctor;
-import model.Operation_room;
 import pub.DBConn;
 
-import javax.swing.plaf.PanelUI;
-import java.sql.Statement;
-import java.sql.ResultSet;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
-import java.util.concurrent.Callable;
+import java.sql.Statement;
 
 public class OperationManager {
     //添加手术信息
@@ -35,7 +30,7 @@ public class OperationManager {
                     o.getBegin_time() +"','" +
                     o.getEsti_over_time() +"','" +
                     o.getRea_over_time() +"','" +
-                    o.getDuration() +"')";
+                    Integer.parseInt(o.getDuration()) +"')";
         try {
                 stmt = conn.createStatement();
                 i = stmt.executeUpdate(sql);
@@ -67,7 +62,8 @@ public class OperationManager {
                     begin_time +"', esti_over_time='" +
                     esti_over_time +"', rea_over_time='" +
                     rea_over_time +"', duration='" +
-                    duration +"'";
+                    Integer.parseInt(duration) +"' where opid='" +
+                    opid +"'";
             try {
                 stmt = conn.createStatement();
                 i = stmt.executeUpdate(sql);

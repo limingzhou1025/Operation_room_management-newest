@@ -1,32 +1,35 @@
 package manager;
-import model.Doctor;
+
 import model.Part;
 import pub.DBConn;
-import java.sql.ResultSet;
+
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
-import manager.*;
+import java.sql.Statement;
 public class PartManager {
     //添加科室信息
     public int addpart(Part p) {
         Connection conn = null;
-        Statement stmt = null;
         ResultSet rs = null;
+        Statement stmt = null;
         DBConn db = new DBConn();
         conn = db.getConn();
         int i = 0;
         String sql;
+        int i1 = Integer.valueOf(p.getDoctor_num());
+        int i2 = Integer.valueOf(p.getFree_doctor_num());
+        int i3 = Integer.valueOf(p.getPatient_num());
+        int i4 = Integer.valueOf(p.getFree_patient_num());
         sql = "insert into part values('" +
                 p.getPartid() + "','" +
                 p.getPartname() + "','" +
                 p.getCharge_name() + "','" +
                 p.getCharge_id() + "','" +
-                p.getDoctor_num() + "','" +
-                p.getFree_doctor_num() + "','" +
-                p.getPatient_num() + "','" +
-                p.getFree_patient_num() + "')";
+                i1 +"','" +
+                i2 +"','" +
+                i3 +"','" +
+                i4 +"')";
         try {
             stmt = conn.createStatement();
             i = stmt.executeUpdate(sql);
@@ -70,15 +73,21 @@ public class PartManager {
         DBConn db = new DBConn();
         conn = db.getConn();
         int i = 0;
+        int i1 = Integer.parseInt(doctor_num);
+        int i2 = Integer.parseInt(free_doctor_num);
+        int i3 = Integer.parseInt(patient_num);
+        int i4 = Integer.parseInt(free_patient_num);
         String sql;
         sql = "update part set partid='" +
-                partid + "', partname='" +
-                partname + "', charge_name='" +
-                charge_name + "', charge_id='" +
-                charge_id + "', doctor_num='" +
-                doctor_num + "', free_doctor_num='" +
-                free_doctor_num + "', free_patient_num='" +
-                free_patient_num + "'";
+                partid +"', partname='" +
+                partname +"', charge_name='" +
+                charge_name +"', charge_id='" +
+                charge_id +"', doctor_num='" +
+                i1 +"', free_docotor_num='" +
+                i2 +"', patient_num='" +
+                i3 +"', free_patient_num='" +
+                i4 +"' where partid='" +
+                partid +"'";
         try {
             stmt = conn.createStatement();
             i = stmt.executeUpdate(sql);
@@ -100,6 +109,7 @@ public class PartManager {
                 partid +"'";
         Part p = null;
         DBConn db = new DBConn();
+        conn = db.getConn();
         try {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
@@ -110,7 +120,7 @@ public class PartManager {
                 p.setCharge_name(rs.getString("charge_name"));
                 p.setCharge_id(rs.getString("charge_id"));
                 p.setDoctor_num(rs.getString("doctor_num"));
-                p.setFree_doctor_num(rs.getString("free_doctor_num"));
+                p.setFree_doctor_num(rs.getString("free_docotor_num"));
                 p.setPatient_num(rs.getString("patient_num"));
                 p.setFree_patient_num(rs.getString("free_patient_num"));
             }

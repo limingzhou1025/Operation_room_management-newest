@@ -1,10 +1,12 @@
 package manager;
-import java.sql.ResultSet;
+
+import model.Doctor;
 import pub.DBConn;
-import java.sql.*;
-import java.sql.Connection.*;
-import model.*;
-import java.util.Vector;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 public class DoctorManager {
     //添加医生信息
     public int addDoctor(Doctor d){
@@ -32,7 +34,7 @@ public class DoctorManager {
             }
             return i;
     }
-    //删除医生信息
+    //删除医生信息，因为删除信息是一个较为敏感的行为，因此只能从系统管理那里删除医生信息，其他信息同样也是
     public int deleterDoctor(String did) throws SQLException{
         Connection conn = null;
         Statement stmt = null;
@@ -68,12 +70,13 @@ public class DoctorManager {
             conn = db.getConn();
             int i = 0;
             String sql;
-            sql ="update Doctor set did='"+ did +"','" +
-                    dname +"','" +
-                    dtitle +"','" +
-                    dpart +"','" +
-                    dspe +"','" +
-                    dphone +"','" +
+            sql ="update Doctor set did='" +
+                    did +"', dname='" +
+                    dname +"', dtitle='" +
+                    dtitle +"', dpart='" +
+                    dpart +"', dspe='" +
+                    dspe +"', dphone='" +
+                    dphone +"', dsex='" +
                     dsex +"' where did='" +
                     did +"'";
             try{
@@ -109,7 +112,7 @@ public class DoctorManager {
                     d.setDpart(rs.getString("dpart"));
                     d.setDspe(rs.getString("dspe"));
                     d.setDphone(rs.getString("dphone"));
-                    d.setSex(rs.getString("desx"));
+                    d.setSex(rs.getString("dsex"));
                 }
                 rs.close();;
                 stmt.close();

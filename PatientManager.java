@@ -1,12 +1,12 @@
 package manager;
-import manager.*;
-import pub.DBConn;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.Connection;
+
 import model.Patient;
+import pub.DBConn;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Vector;
+import java.sql.Statement;
 public class PatientManager {
     //添加患者信息
     public int addPatient(Patient p){
@@ -57,11 +57,13 @@ public class PatientManager {
             return  i;
     }
     //修改患者信息
-    public int updatePatient(String pid, String pname, String page, String psex, String ppart, String pphone, String pill){
+    public int updatePatient(String pid, String pname, String page, String psex, String ppart, String pphone, String pill)
+    throws SQLException{
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
             DBConn db = new DBConn();
+            conn = db.getConn();
             int i = 0;
             String sql;
             sql = "update Patient set pid='" +
@@ -71,7 +73,8 @@ public class PatientManager {
                     psex +"', ppart='" +
                     ppart +"', pphone='" +
                     pphone +"', pill='" +
-                    pill +"'";
+                    pill +"' where pid='" +
+                    pid +"'";
             try{
                 stmt = conn.createStatement();
                 i = stmt.executeUpdate(sql);
@@ -101,7 +104,8 @@ public class PatientManager {
                     p.setPid(rs.getString("pid"));
                     p.setPname(rs.getString("pname"));
                     p.setPage(rs.getString("page"));
-                    p.setPpart(rs.getString("psex"));
+                    p.setPsex(rs.getString("psex"));
+                    p.setPpart(rs.getString("ppart"));
                     p.setPphone(rs.getString("pphone"));
                     p.setPill(rs.getString("pill"));
                 }

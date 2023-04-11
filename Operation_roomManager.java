@@ -1,14 +1,12 @@
 package manager;
-import manager.*;
+
 import model.Operation_room;
 import pub.DBConn;
-import java.sql.Statement;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
-import java.util.Vector;
-import java.util.concurrent.Callable;
+import java.sql.Statement;
 
 public class Operation_roomManager {
     //添加手术室信息
@@ -69,7 +67,8 @@ public class Operation_roomManager {
                     orid +"', orname='" +
                     orname +"', orclass='" +
                     orclass +"', orstate='" +
-                    orstate +"'";
+                    orstate +"'where orid = '" +
+                    orid +"'";
             try {
                 stmt = conn.createStatement();
                 i = stmt.executeUpdate(sql);

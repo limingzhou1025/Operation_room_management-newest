@@ -1,13 +1,10 @@
 package manager;
-import manager.*;
 import model.Operation_class;
 import pub.DBConn;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Vector;
-import model.Operation_room;
 
 public class Operation_classManager {
     //添加手术室等级信息
@@ -16,14 +13,18 @@ public class Operation_classManager {
         Statement stmt = null;
         ResultSet rs = null;
             DBConn db = new DBConn();
+            conn = db.getConn();
             int i = 0;
+            int i1 = Integer.parseInt(oc.getCnumber());
+            int i2 = Integer.parseInt(oc.getC_busy_number());
+            int i3 = Integer.parseInt(oc.getC_free_number());
             String sql;
-            sql = "insert into operation_room values('" +
+            sql = "insert into operation_class values('" +
                     oc.getCid() +"','" +
                     oc.getCname() +"','" +
-                    oc.getCnumber() +"','" +
-                    oc.getC_busy_number() +"','" +
-                    oc.getC_free_number() +"')";
+                    i1 +"','" +
+                    i2 +"','" +
+                    i3 +"')";
             try {
                 stmt = conn.createStatement();
                 i = stmt.executeUpdate(sql);
@@ -35,7 +36,7 @@ public class Operation_classManager {
             return i;
     }
     //删除手术室等级信息
-    public int deleteoperationclass(String orid){
+    public int deleteoperationclass(String cid){
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -43,8 +44,8 @@ public class Operation_classManager {
             conn =db.getConn();
             int i = 0;
             String sql;
-            sql = "delete from operation_class where orid='" +
-                    orid +"'";
+            sql = "delete from operation_class where cid='" +
+                    cid +"'";
             try {
                 stmt = conn.createStatement();
                 i = stmt.executeUpdate(sql);
@@ -61,14 +62,19 @@ public class Operation_classManager {
         ResultSet rs = null;
         Statement stmt = null;
             DBConn db = new DBConn();
+            conn = db.getConn();
             int i = 0;
             String sql;
+            int i1 = Integer.parseInt(cnumber);
+            int i2 = Integer.parseInt(c_busy_number);
+            int i3 = Integer.parseInt(c_free_number);
             sql = "update operation_class set cid='" +
                     cid +"', cname='" +
                     cname +"',cnumber='" +
-                    cnumber +"', c_busy_number='" +
-                    c_busy_number +"', c_free_number='" +
-                    c_free_number +"' ";
+                    i1 +"', c_busy_number='" +
+                    i2 +"', c_free_number='" +
+                    i3 +"' where cid='" +
+                    cid +"'";
             try {
                 stmt = conn.createStatement();
                 i = stmt.executeUpdate(sql);
