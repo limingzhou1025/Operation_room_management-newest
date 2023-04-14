@@ -3,10 +3,9 @@ package manager;
 import model.Patient;
 import pub.DBConn;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Vector;
+
 public class PatientManager {
     //添加患者信息
     public int addPatient(Patient p){
@@ -272,6 +271,107 @@ public class PatientManager {
             ex3.printStackTrace();
         }
         return p;
+    }
+
+    public Vector find(String jt1, String jt2, String jt3, String jt4, String jc) throws SQLException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Vector list = new Vector<>();
+        String sql;
+        int jtin3 = Integer.parseInt(jt3);
+        int jtin4 = Integer.parseInt(jt4);
+        /*sql ="select * from Patient where (pid ='" +
+                jt1 +"' or pphone='" +
+                jt1 +"') and (pname='" +
+                jt2 +"' or ppart='" +
+                jt2 +"') and (page >='" +
+                jtin3 +"') and (page <='" +
+                jtin4 +"') and(psex ='" +
+                jc +"')";*/
+
+        if (jt1.equals("")){
+            if (jt2.equals("")){
+                if (jc.equals("不限")){
+                    sql= "select * from Patient";
+
+                }else{
+                    sql = "select * from Patient where (psex ='" +
+                            jc +"')";
+                }
+            }else{
+                if (jc.equals("不限")){
+                    sql = "select * from Patient where (pname='" +
+                            jt2 +"' or ppart='" +
+                            jt2 +"') ";
+                }else{
+                    sql = "select * from Patient where (pname='" +
+                            jt2 +"' or ppart='" +
+                            jt2 +"')  and(psex ='" +
+                            jc +"')";
+                }
+            }
+        }else{
+            if (jt2.equals("")){
+                if (jc.equals("不限")){
+                    sql = "select * from Patient where (pid ='" +
+                            jt1 +"' or pphone='" +
+                            jt1 +"') ";
+                }else{
+                    sql = "select * from Patient where (pid ='" +
+                            jt1 +"' or pphone='" +
+                            jt1 +"')  and(psex ='" +
+                            jc +"')";
+                }
+            }else{
+                if (jc.equals("不限")){
+                    sql = "select * from Patient where (pid ='" +
+                            jt1 +"' or pphone='" +
+                            jt1 +"') and (pname='" +
+                            jt2 +"' or ppart='" +
+                            jt2 +"') ";
+                }else{
+                    sql = "select * from Patient where (pid ='" +
+                            jt1 +"' or pphone='" +
+                            jt1 +"') and (pname='" +
+                            jt2 +"' or ppart='" +
+                            jt2 +"') and(psex ='" +
+                            jc +"')";
+                }
+            }
+        }
+        Patient p = null;
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            int i = 0;
+            while (resultSet.next()){
+                p = new Patient();
+                p.setPid(resultSet.getString("pid"));
+                p.setPname(resultSet.getString("pname"));
+                p.setPage(resultSet.getString("page"));
+                p.setPsex(resultSet.getString("psex"));
+                p.setPpart(resultSet.getString("ppart"));
+                p.setPphone(resultSet.getString("pphone"));
+                p.setPill(resultSet.getString("pill"));
+                list.add(i,"病号：" +p.getPid() +" "
+                +"姓名：" +p.getPname() +" "
+                +"年龄：" +p.getPage() +" "
+                +"性别：" +p.getPage() +" "
+                +"科室：" +p.getPpart() +" "
+                +"电话：" +p.getPphone() +" "
+                +"病情：" +p.getPill());
+                i++;
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }

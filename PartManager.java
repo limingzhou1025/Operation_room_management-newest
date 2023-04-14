@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
+
 public class PartManager {
     //添加科室信息
     public int addpart(Part p) {
@@ -227,5 +229,64 @@ public class PartManager {
             ex3.printStackTrace();
         }
         return p;
+    }
+
+    public Vector find(String jt1, String jt2) throws SQLException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        Vector<Object> list = new Vector<>();
+        String sql;
+        if (jt1.equals("")){
+            if (jt2.equals("")){
+                sql = "select * from part";
+            }else{
+                sql = "select * from part where (charge_name='" +
+                        jt2 +"' or charge_id = '" +
+                        jt2 +"')";
+            }
+        }else{
+            sql = "select * from part where (partid='" +
+                    jt1 +"' or partname='" +
+                    jt1 +"') and (charge_name='" +
+                    jt2 +"' or charge_id='" +
+                    jt2 +"')";
+        }
+        Part part = null;
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        try {
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+            int i = 0;
+            while (rs.next()){
+                part = new Part();
+                part.setPartid(rs.getString("partid"));
+                part.setPartname(rs.getString("partname"));
+                part.setCharge_name(rs.getString("charge_name"));
+                part.setCharge_id(rs.getString("charge_id"));
+                part.setDoctor_num(rs.getString("doctor_num"));
+                part.setFree_doctor_num(rs.getString("free_docotor_num"));
+                part.setPatient_num(rs.getString("patient_num"));
+                part.setFree_patient_num(rs.getString("free_patient_num"));
+                list.add(i,"科室编号：" +part.getPartid() +" "
+                +"科室名称："+part.getPartname() +" "
+                +"主任姓名："+part.getCharge_name() +" "
+                +"主任工号："+part.getCharge_id() +" "
+                +"医生数量："+part.getDoctor_num() +" "
+                +"空闲医生数量："+part.getFree_doctor_num() +" "
+                +"病人数量："+part.getFree_doctor_num() +" "
+                +"病人数量："+part.getPatient_num() +" "
+                +"未做手术病人数量："+part.getFree_patient_num());
+                i++;
+
+            }
+            rs.close();
+            statement.close();
+            connection.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return list;
     }
 }

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
+
 public class DoctorManager {
     //添加医生信息
     public int addDoctor(Doctor d){
@@ -145,7 +147,7 @@ public class DoctorManager {
                 d.setDpart(rs.getString("dpart"));
                 d.setDspe(rs.getString("dspe"));
                 d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("desx"));
+                d.setSex(rs.getString("dsex"));
             }
             rs.close();
             ;
@@ -178,7 +180,7 @@ public class DoctorManager {
                 d.setDpart(rs.getString("dpart"));
                 d.setDspe(rs.getString("dspe"));
                 d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("desx"));
+                d.setSex(rs.getString("dsex"));
             }
             rs.close();
             stmt.close();
@@ -210,7 +212,7 @@ public class DoctorManager {
                 d.setDpart(rs.getString("dpart"));
                 d.setDspe(rs.getString("dspe"));
                 d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("desx"));
+                d.setSex(rs.getString("dsex"));
             }
             rs.close();
             stmt.close();
@@ -242,7 +244,7 @@ public class DoctorManager {
                 d.setDpart(rs.getString("dpart"));
                 d.setDspe(rs.getString("dspe"));
                 d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("desx"));
+                d.setSex(rs.getString("dsex"));
             }
             rs.close();
             stmt.close();
@@ -274,7 +276,7 @@ public class DoctorManager {
                 d.setDpart(rs.getString("dpart"));
                 d.setDspe(rs.getString("dspe"));
                 d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("desx"));
+                d.setSex(rs.getString("dsex"));
             }
             rs.close();
             stmt.close();
@@ -306,7 +308,7 @@ public class DoctorManager {
                 d.setDpart(rs.getString("dpart"));
                 d.setDspe(rs.getString("dspe"));
                 d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("desx"));
+                d.setSex(rs.getString("dsex"));
             }
             rs.close();
             stmt.close();
@@ -316,6 +318,103 @@ public class DoctorManager {
         }
         return d;
     }
+
+    public Vector<Object> find(String jt1, String jt2, String jt3) throws SQLException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        Vector<Object> list = new Vector<>();
+        String sql;
+        if (jt1.equals("")){
+            if (jt2.equals("")){
+                if (jt3.equals("不限")){
+                    sql = "select * from Doctor";
+                }else{
+                    sql ="select * from Doctor where (dsex='" +
+                            jt3 +"')";
+                }
+            }else{
+                if (jt3.equals("不限")){
+                    sql = "select * from Doctor where  (dname='" +
+                            jt2 +"' or dpart='" +
+                            jt2 +"' or dtitle='" +
+                            jt2 +"') ";
+                }else{
+                    sql = "select * from Doctor where  (dname='" +
+                            jt2 +"' or dpart='" +
+                            jt2 +"' or dtitle='" +
+                            jt2 +"') and (dsex='" +
+                            jt3 +"')";
+                }
+            }
+        }else{
+            if (jt2.equals("")){
+                if (jt3.equals("不限")){
+                    sql ="select * from Doctor where (did='" +
+                            jt1 +"' or dphone='" +
+                            jt1 +"')";
+                }else{
+                    sql = "select * from Doctor where (did='" +
+                            jt1 +"' or dphone='" +
+                            jt1 +"') and (dsex='" +
+                            jt3 +"')";
+                }
+            }else{
+                if (jt3.equals("不限")){
+                    sql = "select * from Doctor where (did='" +
+                            jt1 +"' or dphone='" +
+                            jt1 +"') and (dname='" +
+                            jt2 +"' or dpart='" +
+                            jt2 +"' or dtitle='" +
+                            jt2 +"')";
+                }else{
+                    sql = sql = "select * from Doctor where (did='" +
+                            jt1 +"' or dphone='" +
+                            jt1 +"') and (dname='" +
+                            jt2 +"' or dpart='" +
+                            jt2 +"' or dtitle='" +
+                            jt2 +"') and (dsex='" +
+                            jt3 +"')";
+                }
+
+            }
+        }
+        Doctor d = null;
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        try {
+            statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+            int i = 0;
+            while (rs.next()){
+                d = new Doctor();
+                d.setDid(rs.getString("did"));
+                d.setDname(rs.getString("dname"));
+                d.setDtitle(rs.getString("dtitle"));
+                d.setDpart(rs.getString("dpart"));
+                d.setDspe(rs.getString("dspe"));
+                d.setDphone(rs.getString("dphone"));
+                d.setSex(rs.getString("dsex"));
+                list.add(i,"工号：" +d.getDid() +" "
+                + "姓名：" +d.getDname() +" "
+                + "职称：" +d.getDtitle() +" "
+                + "科室：" +d.getDpart() +" "
+                + "电话：" +d.getDphone() +" "
+                + "性别：" +d.getSex());
+                i++;
+            }
+            rs.close();
+            statement.close();
+            connection.close();
+        }catch (SQLException exception){
+            exception.printStackTrace();
+        }
+        return list;
+
+
+    }
+
+
 }
 
 
