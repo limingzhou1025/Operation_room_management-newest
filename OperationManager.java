@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 public class OperationManager {
     //添加手术信息
@@ -278,6 +279,119 @@ public class OperationManager {
         }
         return o;
     }
+
+    public Vector find(String jt1, String jt2, String jc) throws SQLException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Vector list = new Vector();
+        String sql;
+        /*sql = "select * from Operation where (opid='" +
+                jt1 +"' or opname='" +
+                jt1 +"' or orid='" +
+                jt1 +"') and (dname='" +
+                jt2 +"' or did='" +
+                jt2 +"' or pname='" +
+                jt2 +"' or pid='" +
+                jt2 +"') and ostate='" +
+                jc +"'";*/
+        if (jt1.equals("")){
+            if (jt2.equals("")){
+                if (jc.equals("不限")){
+                    sql = "select * from Operation";
+                }else{
+                    sql = "select * from Operation where ostate='" +
+                            jc +"'";
+                }
+            }else{
+                if (jc.equals("不限")){
+                    sql = "select * from Operation where (dname='" +
+                            jt2 +"' or did='" +
+                            jt2 +"' or pname='" +
+                            jt2 +"' or pid='" +
+                            jt2 +"') ";
+                }else{
+                    sql = "select * from Operation where (dname='" +
+                            jt2 +"' or did='" +
+                            jt2 +"' or pname='" +
+                            jt2 +"' or pid='" +
+                            jt2 +"') and ostate='" +
+                            jc +"'";
+                }
+            }
+        }else{
+            if (jt2.equals("")){
+                if (jc.equals("不限")){
+                    sql = "select * from Operation where (opid='" +
+                            jt1 +"' or opname='" +
+                            jt1 +"' or orid='" +
+                            jt1 +"') ";
+                }else{
+                    sql = "select * from Operation where (opid='" +
+                            jt1 +"' or opname='" +
+                            jt1 +"' or orid='" +
+                            jt1 +"') and ostate='" +
+                            jc +"'";
+                }
+            }else{
+                if (jc.equals("不限")){
+                    sql = "select * from Operation where (opid='" +
+                            jt1 +"' or opname='" +
+                            jt1 +"' or orid='" +
+                            jt1 +"') and (dname='" +
+                            jt2 +"' or did='" +
+                            jt2 +"' or pname='" +
+                            jt2 +"' or pid='" +
+                            jt2 +"')";
+                }else{
+                    sql = "select * from Operation where (opid='" +
+                            jt1 +"' or opname='" +
+                            jt1 +"' or orid='" +
+                            jt1 +"') and (dname='" +
+                            jt2 +"' or did='" +
+                            jt2 +"' or pname='" +
+                            jt2 +"' or pid='" +
+                            jt2 +"') and ostate='" +
+                            jc +"'";
+                }
+            }
+        }
+        Operation o = null;
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            int i = 0;
+            while (resultSet.next()){
+                o = new Operation();
+                o.setOpid(resultSet.getString("opid"));
+                o.setOpname(resultSet.getString("opname"));
+                o.setOrid(resultSet.getString("orid"));
+                o.setDname(resultSet.getString("dname"));
+                o.setDid(resultSet.getString("did"));
+                o.setPname(resultSet.getString("pname"));
+                o.setPid(resultSet.getString("pid"));
+                o.setOstate(resultSet.getString("ostate"));
+                list.add(i,"编号：" +o.getOpid() +" "
+                +"名称：" +o.getOpname() +" "
+                +"手术室号：" +o.getOrid() +" "
+                +"医生姓名：" +o.getDname() +" "
+                +"工号：" +o.getDid() +" "
+                +"患者姓名：" +o.getPname() +" "
+                +"病号：" +o.getPid() +" "
+                +"手术状态：" +o.getOstate());
+                i ++;
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+        return list;
+    }
+
 
 
 }

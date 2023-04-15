@@ -246,11 +246,17 @@ public class PartManager {
                         jt2 +"')";
             }
         }else{
-            sql = "select * from part where (partid='" +
-                    jt1 +"' or partname='" +
-                    jt1 +"') and (charge_name='" +
-                    jt2 +"' or charge_id='" +
-                    jt2 +"')";
+            if (jt2.equals("")){
+                sql = "select * from part where (partid='" +
+                        jt1 +"' or partname='" +
+                        jt1 +"')";
+            }else{
+                sql = "select * from part where (partid='" +
+                        jt1 +"' or partname='" +
+                        jt1 +"') and (charge_name='" +
+                        jt2 +"' or charge_id='" +
+                        jt2 +"')";
+            }
         }
         Part part = null;
         DBConn dbConn = new DBConn();

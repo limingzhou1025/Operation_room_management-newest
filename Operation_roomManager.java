@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 public class Operation_roomManager {
     //添加手术室信息
@@ -198,5 +199,59 @@ public class Operation_roomManager {
         }
         return or;
 
+    }
+    public Vector find(String jt1, String jc)throws SQLException{
+        Connection connection = null;
+        Statement st = null;
+        ResultSet rs = null;
+        Vector list = new Vector<>();
+        String sql;
+        if (jt1.equals("")){
+            if (jc.equals("不限")){
+                sql = "select * from operation_room";
+            }else{
+                sql = "select * from operation_room where orstate='" +
+                        jc +"'";
+            }
+        }else{
+            if (jc.equals("不限")){
+                sql = "select * from operation_room where (orid='" +
+                        jt1 +"' or orname='" +
+                        jt1 +"' or orclass='" +
+                        jt1 +"')";
+            }else{
+                sql = "select * from operation_room where(orid='" +
+                        jt1 +"' or orname='" +
+                        jt1 +"' or orclass='" +
+                        jt1 +"') and (orstate='" +
+                        jc +"')";
+            }
+        }
+        Operation_room or = null;
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        try {
+            st = connection.createStatement();
+            rs = st.executeQuery(sql);
+            int i =0;
+            while (rs.next()){
+                or = new Operation_room();
+                or.setOrid(rs.getString("orid"));
+                or.setOrname(rs.getString("orname"));
+                or.setOrclass(rs.getString("orclass"));
+                or.setOrstate(rs.getString("orstate"));
+                list.add(i,"编号：" +or.getOrid() +" "
+                +"名称：" +or.getOrname() +" "
+                +"层级：" +or.getOrclass() +" "
+                +"状态：" +or.getOrstate() );
+                i++;
+            }
+            rs.close();
+            st.close();
+            connection.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return list;
     }
 }
