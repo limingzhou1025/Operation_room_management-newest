@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Vector;
 
 public class Operation_classManager {
     //添加手术室等级信息
@@ -146,5 +147,47 @@ public class Operation_classManager {
         }
         return oc;
 
+    }
+    public Vector find(String jt) throws SQLException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Vector list = new Vector();
+        String sql;
+        if (jt.equals("")){
+            sql = "select * from operation_class";
+        }else{
+            sql = "select * from operation_class where (cid='" +
+                    jt +"' or cname='" +
+                    jt +"')";
+        }
+        Operation_class oc= null;
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            int i = 0;
+            while (resultSet.next()){
+                oc = new Operation_class();
+                oc.setCid(resultSet.getString("cid"));
+                oc.setCname(resultSet.getString("cname"));
+                oc.setCnumber(resultSet.getString("cnumber"));
+                oc.setC_busy_number(resultSet.getString("c_busy_number"));
+                oc.setC_free_number(resultSet.getString("c_free_number"));
+                list.add(i,"层级编号：" +oc.getCid() +" "
+                + "层级名称：" +oc.getCname() +" "
+                + "数量：" +oc.getCnumber() +" "
+                + "忙碌数量：" +oc.getC_busy_number() +" "
+                + "空闲数量：" +oc.getC_free_number());
+                i++;
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch (SQLException exception){
+            exception.printStackTrace();
+        }
+        return list;
     }
 }
