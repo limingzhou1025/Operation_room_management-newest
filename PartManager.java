@@ -3,10 +3,8 @@ package manager;
 import model.Part;
 import pub.DBConn;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class PartManager {
@@ -134,101 +132,35 @@ public class PartManager {
         }
         return p;
     }
-    //根据科室名称查询科室信息
-    public Part findpartpartname(String partname) {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+
+    //查询所有科室名称
+    public ArrayList findallpart() throws SQLException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
         String sql;
-        sql = "select * from part where partname='" +
-                partname +"'";
-        Part p = null;
-        DBConn db = new DBConn();
+        ArrayList<String> arrayList = new ArrayList<>();
+        sql = "select partname from part";
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        Part part = null;
         try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                p = new Part();
-                p.setPartid(rs.getString("partid"));
-                p.setPartname(rs.getString("partname"));
-                p.setCharge_name(rs.getString("charge_name"));
-                p.setCharge_id(rs.getString("charge_id"));
-                p.setDoctor_num(rs.getString("doctor_num"));
-                p.setFree_doctor_num(rs.getString("free_doctor_num"));
-                p.setPatient_num(rs.getString("patient_num"));
-                p.setFree_patient_num(rs.getString("free_patient_num"));
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                part = new Part();
+                part.setPartname(resultSet.getString("partname"));
+                arrayList.add(part.getPartname());
             }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch (SQLException e){
+            e.printStackTrace();
         }
-        return p;
-    }
-    //根据科室负责人姓名查询科室信息
-    public Part findpartcharge_name(String charge_name) {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql;
-        sql = "select * from part where charge_name='" +
-                charge_name +"'";
-        Part p = null;
-        DBConn db = new DBConn();
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                p = new Part();
-                p.setPartid(rs.getString("partid"));
-                p.setPartname(rs.getString("partname"));
-                p.setCharge_name(rs.getString("charge_name"));
-                p.setCharge_id(rs.getString("charge_id"));
-                p.setDoctor_num(rs.getString("doctor_num"));
-                p.setFree_doctor_num(rs.getString("free_doctor_num"));
-                p.setPatient_num(rs.getString("patient_num"));
-                p.setFree_patient_num(rs.getString("free_patient_num"));
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
-        }
-        return p;
-    }
-    //根据科室负责人工号查询科室信息
-    public Part findpartcharge_id(String charge_id) {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql;
-        sql = "select * from part where charge_id='" +
-                charge_id +"'";
-        Part p = null;
-        DBConn db = new DBConn();
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                p = new Part();
-                p.setPartid(rs.getString("partid"));
-                p.setPartname(rs.getString("partname"));
-                p.setCharge_name(rs.getString("charge_name"));
-                p.setCharge_id(rs.getString("charge_id"));
-                p.setDoctor_num(rs.getString("doctor_num"));
-                p.setFree_doctor_num(rs.getString("free_doctor_num"));
-                p.setPatient_num(rs.getString("patient_num"));
-                p.setFree_patient_num(rs.getString("free_patient_num"));
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
-        }
-        return p;
+        return arrayList;
+
+
     }
 
     public Vector find(String jt1, String jt2) throws SQLException{

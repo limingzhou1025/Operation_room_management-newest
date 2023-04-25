@@ -1,10 +1,13 @@
 package manager;
+
 import model.Operation_class;
 import pub.DBConn;
-import java.sql.ResultSet;
-import java.sql.Statement;
+
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class Operation_classManager {
@@ -190,4 +193,29 @@ public class Operation_classManager {
         }
         return list;
     }
+    //查询所有手术室层级信息
+    public ArrayList findallclass() throws SQLException{
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        String sql;
+        ArrayList<String> arrayList = new ArrayList<>();
+        sql = "select cname from operation_class";
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        Operation_class oc = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while(resultSet.next()){
+                oc = new Operation_class();
+                oc.setCname(resultSet.getString("cname"));
+                arrayList.add(oc.getCname());
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return arrayList;
+    }
+
 }

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class DoctorManager {
@@ -124,201 +125,6 @@ public class DoctorManager {
             }
             return d;
     }
-
-    //根据姓名查询医生信息
-    public Doctor findDoctorname(String dname) throws SQLException {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql;
-        sql = "select * from Doctor where dname='" +
-                dname + "'";
-        Doctor d = null;
-        DBConn db = new DBConn();
-        conn = db.getConn();
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                d = new Doctor();
-                d.setDid(rs.getString("did"));
-                d.setDname(rs.getString("dname"));
-                d.setDtitle(rs.getString("dtitle"));
-                d.setDpart(rs.getString("dpart"));
-                d.setDspe(rs.getString("dspe"));
-                d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("dsex"));
-            }
-            rs.close();
-            ;
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
-        }
-        return d;
-    }
-    //根据职称查询医生信息
-    public Doctor findDoctortitle(String dtitle) throws SQLException {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql;
-        sql = "select * from Doctor where dtitle='" +
-                dtitle + "'";
-        Doctor d = null;
-        DBConn db = new DBConn();
-        conn = db.getConn();
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                d = new Doctor();
-                d.setDid(rs.getString("did"));
-                d.setDname(rs.getString("dname"));
-                d.setDtitle(rs.getString("dtitle"));
-                d.setDpart(rs.getString("dpart"));
-                d.setDspe(rs.getString("dspe"));
-                d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("dsex"));
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
-        }
-        return d;
-    }
-    //根据科室查询医生信息
-    public Doctor findDoctorpart(String dpart) throws SQLException {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql;
-        sql = "select * from Doctor where dpart='" +
-                dpart + "'";
-        Doctor d = null;
-        DBConn db = new DBConn();
-        conn = db.getConn();
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                d = new Doctor();
-                d.setDid(rs.getString("did"));
-                d.setDname(rs.getString("dname"));
-                d.setDtitle(rs.getString("dtitle"));
-                d.setDpart(rs.getString("dpart"));
-                d.setDspe(rs.getString("dspe"));
-                d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("dsex"));
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
-        }
-        return d;
-    }
-    //根据专长查询医生信息
-    public Doctor findDoctorspe(String dspe) throws SQLException {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql;
-        sql = "select * from Doctor where dspe='" +
-                dspe + "'";
-        Doctor d = null;
-        DBConn db = new DBConn();
-        conn = db.getConn();
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                d = new Doctor();
-                d.setDid(rs.getString("did"));
-                d.setDname(rs.getString("dname"));
-                d.setDtitle(rs.getString("dtitle"));
-                d.setDpart(rs.getString("dpart"));
-                d.setDspe(rs.getString("dspe"));
-                d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("dsex"));
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
-        }
-        return d;
-    }
-    //根据电话查询医生信息
-    public Doctor findDoctorphone(String dphone) throws SQLException {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql;
-        sql = "select * from Doctor where dphone='" +
-                dphone + "'";
-        Doctor d = null;
-        DBConn db = new DBConn();
-        conn = db.getConn();
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                d = new Doctor();
-                d.setDid(rs.getString("did"));
-                d.setDname(rs.getString("dname"));
-                d.setDtitle(rs.getString("dtitle"));
-                d.setDpart(rs.getString("dpart"));
-                d.setDspe(rs.getString("dspe"));
-                d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("dsex"));
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
-        }
-        return d;
-    }
-    //根据性别查询医生信息
-    public Doctor findDoctorsex(String dsex) throws SQLException {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql;
-        sql = "select * from Doctor where dsex='" +
-                dsex + "'";
-        Doctor d = null;
-        DBConn db = new DBConn();
-        conn = db.getConn();
-        try {
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            if (rs.next()) {
-                d = new Doctor();
-                d.setDid(rs.getString("did"));
-                d.setDname(rs.getString("dname"));
-                d.setDtitle(rs.getString("dtitle"));
-                d.setDpart(rs.getString("dpart"));
-                d.setDspe(rs.getString("dspe"));
-                d.setDphone(rs.getString("dphone"));
-                d.setSex(rs.getString("dsex"));
-            }
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex3) {
-            ex3.printStackTrace();
-        }
-        return d;
-    }
-
     public Vector<Object> find(String jt1, String jt2, String jt3) throws SQLException{
         Connection connection = null;
         Statement statement = null;
@@ -413,6 +219,34 @@ public class DoctorManager {
 
 
     }
+    public ArrayList<String> selectdoctor(String partname){
+        Connection connection = null;
+        ResultSet resultSet = null;
+        Statement statement = null;
+        String sql;
+        ArrayList<String> vector = new ArrayList<String>();
+        sql = "select dname from Doctor where dpart='" +
+                partname +"'";
+        Doctor d = null;
+        DBConn dbConn = new DBConn();
+        connection = dbConn.getConn();
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                d = new Doctor();
+                d.setDid(resultSet.getString("did"));
+                vector.add(d.getDid());
+            }
+            resultSet.close();
+            statement.close();
+            connection.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return vector;
+    }
+
 
 
 }
