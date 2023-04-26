@@ -225,7 +225,7 @@ public class DoctorManager {
         Statement statement = null;
         String sql;
         ArrayList<String> vector = new ArrayList<String>();
-        sql = "select dname from Doctor where dpart='" +
+        sql = "select did from Doctor where dpart='" +
                 partname +"'";
         Doctor d = null;
         DBConn dbConn = new DBConn();

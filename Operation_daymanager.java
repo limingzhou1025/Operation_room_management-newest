@@ -67,7 +67,7 @@ public class Operation_daymanager {
                                   Date planningday, Date realoperationday,
                                   Date latestoperationday, Integer minoperation,
                                   Integer mostoperation, Integer maxoperation,
-                                  Double infection)
+                                  Integer infection)
     {
         Connection connection = null;
         ResultSet resultSet = null;
@@ -101,16 +101,17 @@ public class Operation_daymanager {
         return i;
     }
     //选出固定科室在某时间段入院的病人
-    public ArrayList selectpatient(String partname, String beginday, String overday){
+    public ArrayList<String> selectpatient(String partname, String beginday, String overday){
         Connection connection = null;
         ResultSet resultSet = null;
         Statement statement = null;
         String sql;
-        ArrayList arrayList = new ArrayList();
+        ArrayList<String> arrayList = new ArrayList<String>();
         sql = "select patientid from Operation_day where partname='" +
-                partname +"'and (admissionday between'" +
-                beginday +"'and'" +
-                overday +"')";
+                partname +"' and admissionday between'" +
+                beginday +"' and '" +
+                overday +"'";
+
         Operation_day od = null;
         DBConn dbConn = new DBConn();
         connection = dbConn.getConn();
@@ -140,7 +141,7 @@ public class Operation_daymanager {
         sql = "select operationduration from Operation_day where partname='" +
                 partname +"'and (admissionday between'" +
                 beginday +"'and'" +
-                overday +"')";
+                overday +"') order by admissionday asc";
         Operation_day od = null;
         DBConn dbConn = new DBConn();
         connection = dbConn.getConn();
@@ -170,10 +171,11 @@ public class Operation_daymanager {
         sql = "select infection from Operation_day where partname='" +
                 partname +"'and (admissionday between'" +
                 beginday +"'and'" +
-                overday +"')";
+                overday +"')order by admissionday asc";
         Operation_day od = null;
         DBConn dbConn = new DBConn();
         connection = dbConn.getConn();
+        int[] infection = new int[1000];
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
@@ -182,6 +184,8 @@ public class Operation_daymanager {
                 od.setInfection(Integer.valueOf(resultSet.getString("infection")));
                 arrayList.add(od.getInfection());
             }
+
+
             resultSet.close();
             statement.close();
             connection.close();
@@ -191,16 +195,17 @@ public class Operation_daymanager {
 
         return arrayList;
     }
-    public ArrayList<java.util.Date> selectpatientadmissionday(String partname, String beginday, String overday){
+    public ArrayList selectpatientadmissionday(String partname, String beginday, String overday){
         Connection connection = null;
         ResultSet resultSet = null;
         Statement statement = null;
         String sql;
         ArrayList<java.util.Date> arrayList = new ArrayList<>();
+        ArrayList<Integer> admissionday = new ArrayList<>();
         sql = "select admissionday from Operation_day where partname='" +
                 partname +"'and (admissionday between'" +
                 beginday +"'and'" +
-                overday +"')";
+                overday +"')order by admissionday asc";
         Operation_day od = null;
         DBConn dbConn = new DBConn();
         connection = dbConn.getConn();
@@ -218,6 +223,7 @@ public class Operation_daymanager {
         }catch (SQLException e){
             e.printStackTrace();
         }
+
 
         return arrayList;
     }
